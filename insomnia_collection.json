@@ -1,0 +1,439 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-01-08T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v12.0.0",
+  "resources": [
+    {
+      "_id": "wrk_rental_api",
+      "_type": "workspace",
+      "name": "Car Rental API",
+      "description": "API REST para sistema de aluguel de carros"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000"
+      },
+      "parentId": "wrk_rental_api"
+    },
+    {
+      "_id": "req_cars_create",
+      "_type": "request",
+      "name": "Create Car",
+      "method": "POST",
+      "url": "{{ _.base_url }}/cars/",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"brand\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2023,\n  \"license_plate\": \"ABC1234\",\n  \"daily_rate\": 150.0,\n  \"is_available\": true\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_cars"
+    },
+    {
+      "_id": "req_cars_get",
+      "_type": "request",
+      "name": "Get Car by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cars/1",
+      "parentId": "fld_cars"
+    },
+    {
+      "_id": "req_cars_list",
+      "_type": "request",
+      "name": "List All Cars",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cars/",
+      "parentId": "fld_cars"
+    },
+    {
+      "_id": "req_cars_available",
+      "_type": "request",
+      "name": "Search Available Cars",
+      "method": "GET",
+      "url": "{{ _.base_url }}/cars/available/search?brand=Toyota&max_price=200",
+      "parentId": "fld_cars"
+    },
+    {
+      "_id": "req_cars_update",
+      "_type": "request",
+      "name": "Update Car",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/cars/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"daily_rate\": 160.0\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_cars"
+    },
+    {
+      "_id": "req_cars_delete",
+      "_type": "request",
+      "name": "Delete Car",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/cars/1",
+      "parentId": "fld_cars"
+    },
+    {
+      "_id": "req_customers_create",
+      "_type": "request",
+      "name": "Create Customer",
+      "method": "POST",
+      "url": "{{ _.base_url }}/customers/",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"João Silva\",\n  \"cpf\": \"12345678901\",\n  \"phone\": \"11987654321\",\n  \"email\": \"joao.silva@example.com\",\n  \"has_pending_payment\": false\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_customers"
+    },
+    {
+      "_id": "req_customers_get",
+      "_type": "request",
+      "name": "Get Customer by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/customers/1",
+      "parentId": "fld_customers"
+    },
+    {
+      "_id": "req_customers_list",
+      "_type": "request",
+      "name": "List All Customers",
+      "method": "GET",
+      "url": "{{ _.base_url }}/customers/",
+      "parentId": "fld_customers"
+    },
+    {
+      "_id": "req_customers_update",
+      "_type": "request",
+      "name": "Update Customer",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/customers/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"phone\": \"11999887766\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_customers"
+    },
+    {
+      "_id": "req_customers_delete",
+      "_type": "request",
+      "name": "Delete Customer",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/customers/1",
+      "parentId": "fld_customers"
+    },
+    {
+      "_id": "req_rentals_create",
+      "_type": "request",
+      "name": "Create Rental",
+      "method": "POST",
+      "url": "{{ _.base_url }}/rentals/",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"customer_id\": 1,\n  \"car_id\": 1,\n  \"start_date\": \"2025-01-10T10:00:00\",\n  \"end_date\": \"2025-01-20T10:00:00\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_get",
+      "_type": "request",
+      "name": "Get Rental by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/rentals/1",
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_list",
+      "_type": "request",
+      "name": "List All Rentals",
+      "method": "GET",
+      "url": "{{ _.base_url }}/rentals/",
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_search",
+      "_type": "request",
+      "name": "Search Rentals",
+      "method": "GET",
+      "url": "{{ _.base_url }}/rentals/search/filter?customer_id=1&status=active",
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_update",
+      "_type": "request",
+      "name": "Update Rental",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/rentals/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"end_date\": \"2025-01-25T10:00:00\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_complete",
+      "_type": "request",
+      "name": "Complete Rental",
+      "method": "POST",
+      "url": "{{ _.base_url }}/rentals/1/complete",
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_cancel",
+      "_type": "request",
+      "name": "Cancel Rental",
+      "method": "POST",
+      "url": "{{ _.base_url }}/rentals/1/cancel",
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_rentals_delete",
+      "_type": "request",
+      "name": "Delete Rental",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/rentals/1",
+      "parentId": "fld_rentals"
+    },
+    {
+      "_id": "req_payments_create",
+      "_type": "request",
+      "name": "Create Payment",
+      "method": "POST",
+      "url": "{{ _.base_url }}/payments/",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"rental_id\": 1,\n  \"amount\": 1500.0,\n  \"payment_method\": \"credit_card\",\n  \"payment_date\": \"2025-01-10T10:00:00\",\n  \"status\": \"pending\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_payments_get",
+      "_type": "request",
+      "name": "Get Payment by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/payments/1",
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_payments_list",
+      "_type": "request",
+      "name": "List All Payments",
+      "method": "GET",
+      "url": "{{ _.base_url }}/payments/",
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_payments_by_rental",
+      "_type": "request",
+      "name": "Get Payments by Rental",
+      "method": "GET",
+      "url": "{{ _.base_url }}/payments/rental/1",
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_payments_update",
+      "_type": "request",
+      "name": "Update Payment",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/payments/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"payment_method\": \"pix\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_payments_process",
+      "_type": "request",
+      "name": "Process Payment",
+      "method": "POST",
+      "url": "{{ _.base_url }}/payments/1/process",
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_payments_delete",
+      "_type": "request",
+      "name": "Delete Payment",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/payments/1",
+      "parentId": "fld_payments"
+    },
+    {
+      "_id": "req_maintenances_create",
+      "_type": "request",
+      "name": "Create Maintenance",
+      "method": "POST",
+      "url": "{{ _.base_url }}/maintenances/",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"car_id\": 1,\n  \"description\": \"Troca de óleo e filtros\",\n  \"maintenance_date\": \"2025-01-15T09:00:00\",\n  \"cost\": 300.0,\n  \"status\": \"scheduled\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_maintenances_get",
+      "_type": "request",
+      "name": "Get Maintenance by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/maintenances/1",
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_maintenances_list",
+      "_type": "request",
+      "name": "List All Maintenances",
+      "method": "GET",
+      "url": "{{ _.base_url }}/maintenances/",
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_maintenances_by_car",
+      "_type": "request",
+      "name": "Get Maintenances by Car",
+      "method": "GET",
+      "url": "{{ _.base_url }}/maintenances/car/1",
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_maintenances_update",
+      "_type": "request",
+      "name": "Update Maintenance",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/maintenances/1",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"cost\": 350.0,\n  \"status\": \"in_progress\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_maintenances_complete",
+      "_type": "request",
+      "name": "Complete Maintenance",
+      "method": "POST",
+      "url": "{{ _.base_url }}/maintenances/1/complete",
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_maintenances_delete",
+      "_type": "request",
+      "name": "Delete Maintenance",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/maintenances/1",
+      "parentId": "fld_maintenances"
+    },
+    {
+      "_id": "req_health",
+      "_type": "request",
+      "name": "Health Check",
+      "method": "GET",
+      "url": "{{ _.base_url }}/health",
+      "parentId": "fld_general"
+    },
+    {
+      "_id": "req_root",
+      "_type": "request",
+      "name": "Root Endpoint",
+      "method": "GET",
+      "url": "{{ _.base_url }}/",
+      "parentId": "fld_general"
+    },
+    {
+      "_id": "fld_general",
+      "_type": "request_group",
+      "name": "General",
+      "parentId": "wrk_rental_api"
+    },
+    {
+      "_id": "fld_cars",
+      "_type": "request_group",
+      "name": "Cars",
+      "parentId": "wrk_rental_api"
+    },
+    {
+      "_id": "fld_customers",
+      "_type": "request_group",
+      "name": "Customers",
+      "parentId": "wrk_rental_api"
+    },
+    {
+      "_id": "fld_rentals",
+      "_type": "request_group",
+      "name": "Rentals",
+      "parentId": "wrk_rental_api"
+    },
+    {
+      "_id": "fld_payments",
+      "_type": "request_group",
+      "name": "Payments",
+      "parentId": "wrk_rental_api"
+    },
+    {
+      "_id": "fld_maintenances",
+      "_type": "request_group",
+      "name": "Maintenances",
+      "parentId": "wrk_rental_api"
+    }
+  ]
+}
