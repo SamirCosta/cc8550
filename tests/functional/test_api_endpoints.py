@@ -12,7 +12,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from main import app
 from src.config import Database
 
-# Importar fixtures necessárias
 from tests.fixtures.test_data import (
     valid_cpfs,
     valid_emails,
@@ -27,34 +26,27 @@ def client():
     Cada teste recebe uma instância limpa do banco de dados.
     Usa a mesma estratégia da fixture test_db para garantir compatibilidade.
     """
-    # Usa um nome único para cada teste (compatível com Windows)
     test_db_path = f"test_functional_api_{uuid.uuid4().hex[:8]}.db"
 
-    # Configurar banco de teste
     db = Database()
     db.db_path = test_db_path
-    db._conn = None  # Reset connection
+    db._conn = None
     db.initialize_schema()
 
-    # Criar client
     test_client = TestClient(app)
 
     yield test_client
 
-    # Cleanup - fecha a conexão antes de remover o arquivo (Windows)
     if hasattr(db, '_conn') and db._conn:
         db._conn.close()
         db._conn = None
 
-    # Força garbage collection para liberar recursos
     gc.collect()
 
-    # Limpeza
     if os.path.exists(test_db_path):
         try:
             os.remove(test_db_path)
         except PermissionError:
-            # No Windows, às vezes o arquivo ainda está em uso
             pass
 
 

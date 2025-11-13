@@ -15,10 +15,6 @@ from .repositories import (
     maintenance_repository
 )
 
-
-# ==================== Sample Data Fixtures ====================
-
-
 @pytest.fixture
 def sample_car():
     """
@@ -26,11 +22,6 @@ def sample_car():
 
     Returns:
         Car: Objeto Car com dados de exemplo
-
-    Examples:
-        >>> def test_car_attributes(sample_car):
-        ...     assert sample_car.brand == "Toyota"
-        ...     assert sample_car.is_available is True
     """
     return Car(
         brand="Toyota",
@@ -49,15 +40,10 @@ def sample_customer():
 
     Returns:
         Customer: Objeto Customer com dados de exemplo
-
-    Examples:
-        >>> def test_customer_attributes(sample_customer):
-        ...     assert sample_customer.name == "João Silva"
-        ...     assert sample_customer.has_pending_payment is False
     """
     return Customer(
         name="João Silva",
-        cpf="12345678901",
+        cpf="46627389894",
         phone="11987654321",
         email="joao@example.com",
         has_pending_payment=False
@@ -71,11 +57,6 @@ def sample_rental():
 
     Returns:
         Rental: Objeto Rental com dados de exemplo
-
-    Examples:
-        >>> def test_rental_attributes(sample_rental):
-        ...     assert sample_rental.status == "active"
-        ...     assert sample_rental.total_value == 1500.0
     """
     start_date = datetime.now() + timedelta(days=1)
     end_date = start_date + timedelta(days=10)
@@ -97,11 +78,6 @@ def sample_payment():
 
     Returns:
         Payment: Objeto Payment com dados de exemplo
-
-    Examples:
-        >>> def test_payment_attributes(sample_payment):
-        ...     assert sample_payment.payment_method == "credit_card"
-        ...     assert sample_payment.status == "pending"
     """
     return Payment(
         rental_id=1,
@@ -119,11 +95,6 @@ def sample_maintenance():
 
     Returns:
         Maintenance: Objeto Maintenance com dados de exemplo
-
-    Examples:
-        >>> def test_maintenance_attributes(sample_maintenance):
-        ...     assert sample_maintenance.description == "Troca de óleo"
-        ...     assert sample_maintenance.status == "scheduled"
     """
     return Maintenance(
         car_id=1,
@@ -132,9 +103,6 @@ def sample_maintenance():
         cost=300.0,
         status="scheduled"
     )
-
-
-# ==================== Created Data Fixtures ====================
 
 
 @pytest.fixture
@@ -148,11 +116,6 @@ def create_test_car(car_repository, sample_car):
 
     Returns:
         Car: Carro criado no banco com ID
-
-    Examples:
-        >>> def test_with_created_car(create_test_car):
-        ...     assert create_test_car.id is not None
-        ...     assert create_test_car.brand == "Toyota"
     """
     return car_repository.create(sample_car)
 
@@ -168,11 +131,6 @@ def create_test_customer(customer_repository, sample_customer):
 
     Returns:
         Customer: Cliente criado no banco com ID
-
-    Examples:
-        >>> def test_with_created_customer(create_test_customer):
-        ...     assert create_test_customer.id is not None
-        ...     assert create_test_customer.name == "João Silva"
     """
     return customer_repository.create(sample_customer)
 
@@ -189,12 +147,6 @@ def create_test_rental(rental_repository, create_test_car, create_test_customer)
 
     Returns:
         Rental: Aluguel criado no banco com IDs relacionados
-
-    Examples:
-        >>> def test_with_created_rental(create_test_rental):
-        ...     assert create_test_rental.id is not None
-        ...     assert create_test_rental.customer_id is not None
-        ...     assert create_test_rental.car_id is not None
     """
     start_date = datetime.now() + timedelta(days=1)
     end_date = start_date + timedelta(days=10)
@@ -221,11 +173,6 @@ def create_test_payment(payment_repository, create_test_rental):
 
     Returns:
         Payment: Pagamento criado no banco com ID
-
-    Examples:
-        >>> def test_with_created_payment(create_test_payment):
-        ...     assert create_test_payment.id is not None
-        ...     assert create_test_payment.rental_id is not None
     """
     payment = Payment(
         rental_id=create_test_rental.id,

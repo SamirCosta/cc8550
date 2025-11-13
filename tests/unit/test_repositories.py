@@ -1,7 +1,6 @@
 import pytest
 from src.utils import NotFoundException
 
-# Importar fixtures necessárias
 from tests.fixtures.database import test_db
 from tests.fixtures.repositories import (
     car_repository,

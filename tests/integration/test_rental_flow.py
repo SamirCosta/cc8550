@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from src.services import CarService, CustomerService, RentalService, PaymentService, MaintenanceService
 from src.utils import BusinessRuleException
 
-# Importar fixtures necessárias
 from tests.fixtures.database import test_db
 from tests.fixtures.test_data import valid_cpfs, valid_emails
 

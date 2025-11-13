@@ -14,11 +14,6 @@ def valid_cpfs():
 
     Returns:
         list[str]: Lista de CPFs válidos
-
-    Examples:
-        >>> @pytest.mark.parametrize("cpf", valid_cpfs())
-        ... def test_cpf_validation(cpf):
-        ...     assert Validator.validate_cpf(cpf) is True
     """
     return [
         "11144477735",
@@ -34,12 +29,6 @@ def invalid_cpfs():
 
     Returns:
         list[str]: Lista de CPFs inválidos
-
-    Examples:
-        >>> @pytest.mark.parametrize("cpf", invalid_cpfs())
-        ... def test_invalid_cpf(cpf):
-        ...     with pytest.raises(ValidationException):
-        ...         Validator.validate_cpf(cpf)
     """
     return [
         "00000000000",  # Todos zeros
@@ -58,11 +47,6 @@ def valid_emails():
 
     Returns:
         list[str]: Lista de emails válidos
-
-    Examples:
-        >>> @pytest.mark.parametrize("email", valid_emails())
-        ... def test_email_validation(email):
-        ...     assert Validator.validate_email(email) is True
     """
     return [
         "joao@example.com",
@@ -79,12 +63,6 @@ def invalid_emails():
 
     Returns:
         list[str]: Lista de emails inválidos
-
-    Examples:
-        >>> @pytest.mark.parametrize("email", invalid_emails())
-        ... def test_invalid_email(email):
-        ...     with pytest.raises(ValidationException):
-        ...         Validator.validate_email(email)
     """
     return [
         "invalid",           # Sem @
@@ -103,11 +81,6 @@ def valid_phones():
 
     Returns:
         list[str]: Lista de telefones válidos
-
-    Examples:
-        >>> @pytest.mark.parametrize("phone", valid_phones())
-        ... def test_phone_validation(phone):
-        ...     assert Validator.validate_phone(phone) is True
     """
     return [
         "11987654321",
@@ -123,12 +96,6 @@ def invalid_phones():
 
     Returns:
         list[str]: Lista de telefones inválidos
-
-    Examples:
-        >>> @pytest.mark.parametrize("phone", invalid_phones())
-        ... def test_invalid_phone(phone):
-        ...     with pytest.raises(ValidationException):
-        ...         Validator.validate_phone(phone)
     """
     return [
         "123",              # Muito curto
@@ -144,11 +111,6 @@ def valid_license_plates():
 
     Returns:
         list[str]: Lista de placas válidas
-
-    Examples:
-        >>> @pytest.mark.parametrize("plate", valid_license_plates())
-        ... def test_plate_validation(plate):
-        ...     assert Validator.validate_license_plate(plate) is True
     """
     return [
         "ABC1234",
@@ -164,12 +126,6 @@ def invalid_license_plates():
 
     Returns:
         list[str]: Lista de placas inválidas
-
-    Examples:
-        >>> @pytest.mark.parametrize("plate", invalid_license_plates())
-        ... def test_invalid_plate(plate):
-        ...     with pytest.raises(ValidationException):
-        ...         Validator.validate_license_plate(plate)
     """
     return [
         "ABC123",       # Muito curto
