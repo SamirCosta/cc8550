@@ -20,28 +20,10 @@ class TestCPFValidator:
     Testes unitários para validação de CPF.
     """
 
-    def test_valid_cpf(self, valid_cpfs):
-        """Testa CPF válido usando fixture."""
-        assert Validator.validate_cpf(valid_cpfs[0]) is True
-
     def test_all_valid_cpfs(self, valid_cpfs):
-        """Testa todos os CPFs válidos da fixture."""
+        """Testa todos os CPFs válidos da fixture (inclui CPF com formatação)."""
         for cpf in valid_cpfs:
             assert Validator.validate_cpf(cpf) is True
-
-    @pytest.mark.parametrize("cpf", [
-        "52998224725",
-        "84434916041",
-        "111.444.777-35"
-    ])
-    def test_multiple_valid_cpfs(self, cpf):
-        """Testa múltiplos CPFs válidos usando parametrização."""
-        assert Validator.validate_cpf(cpf) is True
-
-    def test_invalid_cpf_all_same_digits(self):
-        """Testa CPF inválido com todos os dígitos iguais."""
-        with pytest.raises(ValidationException, match="CPF inválido"):
-            Validator.validate_cpf("11111111111")
 
     def test_all_invalid_cpfs(self, invalid_cpfs):
         """Testa todos os CPFs inválidos da fixture."""
@@ -49,62 +31,22 @@ class TestCPFValidator:
             with pytest.raises(ValidationException):
                 Validator.validate_cpf(cpf)
 
-    @pytest.mark.parametrize("cpf", [
-        "00000000000",
-        "12345678901",
-        "123",
-        ""
-    ])
-    def test_multiple_invalid_cpfs(self, cpf):
-        """Testa múltiplos CPFs inválidos."""
-        with pytest.raises(ValidationException):
-            Validator.validate_cpf(cpf)
-
-    def test_cpf_with_formatting(self):
-        """Testa CPF válido com formatação."""
-        assert Validator.validate_cpf("111.444.777-35") is True
-
 
 class TestEmailValidator:
     """
     Testes unitários para validação de email.
     """
 
-    def test_valid_email(self, valid_emails):
-        """Testa email válido usando fixture."""
-        assert Validator.validate_email(valid_emails[0]) is True
-
     def test_all_valid_emails(self, valid_emails):
         """Testa todos os emails válidos da fixture."""
         for email in valid_emails:
             assert Validator.validate_email(email) is True
-
-    @pytest.mark.parametrize("email", [
-        "test@domain.com",
-        "user.name@site.com.br",
-        "admin+tag@example.org"
-    ])
-    def test_multiple_valid_emails(self, email):
-        """Testa múltiplos emails válidos."""
-        assert Validator.validate_email(email) is True
 
     def test_all_invalid_emails(self, invalid_emails):
         """Testa todos os emails inválidos da fixture."""
         for email in invalid_emails:
             with pytest.raises(ValidationException, match="Email inválido"):
                 Validator.validate_email(email)
-
-    @pytest.mark.parametrize("email", [
-        "invalid",
-        "@example.com",
-        "user@",
-        "user @example.com",
-        ""
-    ])
-    def test_invalid_emails(self, email):
-        """Testa emails inválidos."""
-        with pytest.raises(ValidationException, match="Email inválido"):
-            Validator.validate_email(email)
 
 
 class TestPhoneValidator:
@@ -117,32 +59,11 @@ class TestPhoneValidator:
         for phone in valid_phones:
             assert Validator.validate_phone(phone) is True
 
-    @pytest.mark.parametrize("phone", [
-        "11987654321",
-        "1133334444",
-        "(11) 98765-4321",
-        "(11) 3333-4444"
-    ])
-    def test_valid_phones(self, phone):
-        """Testa telefones válidos."""
-        assert Validator.validate_phone(phone) is True
-
     def test_all_invalid_phones(self, invalid_phones):
         """Testa todos os telefones inválidos da fixture."""
         for phone in invalid_phones:
             with pytest.raises(ValidationException, match="Telefone inválido"):
                 Validator.validate_phone(phone)
-
-    @pytest.mark.parametrize("phone", [
-        "123",
-        "123456789012",
-        "abc",
-        ""
-    ])
-    def test_invalid_phones(self, phone):
-        """Testa telefones inválidos."""
-        with pytest.raises(ValidationException, match="Telefone inválido"):
-            Validator.validate_phone(phone)
 
 
 class TestLicensePlateValidator:
@@ -151,36 +72,15 @@ class TestLicensePlateValidator:
     """
 
     def test_all_valid_license_plates(self, valid_license_plates):
-        """Testa todas as placas válidas da fixture."""
+        """Testa todas as placas válidas da fixture (formatos antigo e Mercosul)."""
         for plate in valid_license_plates:
             assert Validator.validate_license_plate(plate) is True
-
-    @pytest.mark.parametrize("plate", [
-        "ABC1234",
-        "ABC1D23",
-        "abc1234",
-        "ABC-1234"
-    ])
-    def test_valid_plates(self, plate):
-        """Testa placas válidas (formato antigo e Mercosul)."""
-        assert Validator.validate_license_plate(plate) is True
 
     def test_all_invalid_license_plates(self, invalid_license_plates):
         """Testa todas as placas inválidas da fixture."""
         for plate in invalid_license_plates:
             with pytest.raises(ValidationException, match="Placa inválida"):
                 Validator.validate_license_plate(plate)
-
-    @pytest.mark.parametrize("plate", [
-        "AB1234",
-        "ABCD123",
-        "1234567",
-        ""
-    ])
-    def test_invalid_plates(self, plate):
-        """Testa placas inválidas."""
-        with pytest.raises(ValidationException, match="Placa inválida"):
-            Validator.validate_license_plate(plate)
 
 
 class TestDateRangeValidator:

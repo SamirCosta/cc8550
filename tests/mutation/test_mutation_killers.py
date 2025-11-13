@@ -142,34 +142,21 @@ class TestConstantMutationKillers:
     Testes para detectar mutações de constantes (True/False, 0/1, strings).
     """
 
-    def test_positive_number_validator_zero_exactly(self):
+    @pytest.mark.parametrize("value,should_pass", [
+        (0, False),      # Zero deve ser inválido (detecta <= para <)
+        (-1, False),     # Negativo deve ser inválido
+        (0.01, True),    # Pequeno positivo deve ser válido (detecta mutação de 0 para 1)
+        (1, True),       # Positivo deve ser válido
+    ])
+    def test_positive_number_validator_boundaries(self, value, should_pass):
         """
-        Testa exatamente o valor 0 para detectar mutação de <= para <.
-
-        Original: if value <= 0
-        Mutação: if value < 0
+        Testa valores limites para detectar mutações de operadores e constantes.
         """
-        # Zero deve ser inválido
-        with pytest.raises(ValidationException, match="deve ser maior que zero"):
-            Validator.validate_positive_number(0, "Teste")
-
-        # Se <= foi mutado para <, zero seria aceito
-
-    def test_positive_number_validator_negative(self):
-        """
-        Testa valor negativo para complementar teste anterior.
-        """
-        with pytest.raises(ValidationException, match="deve ser maior que zero"):
-            Validator.validate_positive_number(-1, "Teste")
-
-    def test_positive_number_validator_small_positive(self):
-        """
-        Testa pequeno valor positivo (0.01) para detectar mutações.
-        """
-        # 0.01 deve ser válido
-        assert Validator.validate_positive_number(0.01, "Teste") is True
-
-        # Se constante 0 foi mutada para 1, este teste falharia
+        if should_pass:
+            assert Validator.validate_positive_number(value, "Teste") is True
+        else:
+            with pytest.raises(ValidationException, match="deve ser maior que zero"):
+                Validator.validate_positive_number(value, "Teste")
 
 
 class TestReturnValueMutationKillers:
@@ -252,43 +239,54 @@ class TestEdgeCaseMutationKillers:
     Testes de edge cases específicos.
     """
 
-    def test_date_range_start_exactly_now(self):
+    @pytest.mark.parametrize("days_offset,should_pass", [
+        (0, True),   # Hoje deve ser aceito (não é passado)
+        (-1, False), # Ontem deve ser rejeitado
+    ])
+    def test_date_range_boundaries(self, days_offset, should_pass):
         """
-        Testa data de início exatamente agora (hoje é válido).
+        Testa datas limite para detectar mutações em validação de datas.
         """
-        now = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-        tomorrow = now + timedelta(days=1)
+        start = datetime.now() + timedelta(days=days_offset)
+        end = datetime.now() + timedelta(days=2)
 
-        # Hoje (agora) deve ser aceito (não é passado)
-        assert Validator.validate_date_range(now, tomorrow) is True
+        if should_pass:
+            assert Validator.validate_date_range(start, end) is True
+        else:
+            with pytest.raises(ValidationException, match="não pode ser no passado"):
+                Validator.validate_date_range(start, end)
 
-    def test_date_range_yesterday(self):
-        """
-        Testa data de início no passado (ontem).
-        """
-        yesterday = datetime.now() - timedelta(days=1)
-        tomorrow = datetime.now() + timedelta(days=1)
-
-        with pytest.raises(ValidationException, match="não pode ser no passado"):
-            Validator.validate_date_range(yesterday, tomorrow)
-
-    def test_year_validator_boundaries(self):
+    @pytest.mark.parametrize("year_offset,should_pass", [
+        (-1, False),  # 1899 - inválido
+        (0, True),    # 1900 - válido
+        (None, True), # ano atual - válido
+        (+1, True),   # ano atual + 1 - válido
+        (+2, False),  # ano atual + 2 - inválido
+    ])
+    def test_year_validator_boundaries(self, year_offset, should_pass):
         """
         Testa valores nos limites do validador de ano.
         """
         current_year = datetime.now().year
+        year = 1900 + year_offset if year_offset is not None and year_offset < 100 else current_year + (year_offset if year_offset and year_offset < 100 else 0)
 
-        # Anos válidos
-        assert Validator.validate_year(1900) is True
-        assert Validator.validate_year(current_year) is True
-        assert Validator.validate_year(current_year + 1) is True
+        # Ajusta o cálculo do ano baseado no offset
+        if year_offset == -1:
+            year = 1899
+        elif year_offset == 0:
+            year = 1900
+        elif year_offset is None:
+            year = current_year
+        elif year_offset == 1:
+            year = current_year + 1
+        elif year_offset == 2:
+            year = current_year + 2
 
-        # Anos inválidos
-        with pytest.raises(ValidationException):
-            Validator.validate_year(1899)
-
-        with pytest.raises(ValidationException):
-            Validator.validate_year(current_year + 2)
+        if should_pass:
+            assert Validator.validate_year(year) is True
+        else:
+            with pytest.raises(ValidationException):
+                Validator.validate_year(year)
 
 
 class TestCoverageGapMutationKillers:
