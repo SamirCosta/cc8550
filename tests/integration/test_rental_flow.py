@@ -6,6 +6,16 @@ from src.utils import BusinessRuleException
 from tests.fixtures.database import test_db
 from tests.fixtures.test_data import valid_cpfs, valid_emails
 
+from tests.fixtures.models import (
+    sample_car,
+    sample_customer,
+    sample_maintenance,
+    sample_payment,
+    create_test_car,
+    create_test_customer,
+    create_test_rental
+)
+
 
 class TestRentalCompleteFlow:
     """
@@ -13,7 +23,7 @@ class TestRentalCompleteFlow:
     Usa fixtures do diretório tests/fixtures/ para garantir consistência.
     """
 
-    def test_complete_rental_workflow(self, test_db, valid_cpfs, valid_emails):
+    def test_complete_rental_workflow(self, test_db, valid_cpfs, valid_emails, sample_car, sample_customer):
         """
         Testa o fluxo completo: criar carro, cliente, aluguel, pagamento e finalizar.
         """
@@ -22,23 +32,10 @@ class TestRentalCompleteFlow:
         rental_service = RentalService()
         payment_service = PaymentService()
 
-        car_data = {
-            "brand": "Toyota",
-            "model": "Corolla",
-            "year": 2023,
-            "license_plate": "ABC1234",
-            "daily_rate": 150.0
-        }
-        car = car_service.create_car(car_data)
+        car = car_service.create_car(sample_car.__dict__)
         assert car.id is not None
 
-        customer_data = {
-            "name": "João Silva",
-            "cpf": valid_cpfs[0],
-            "phone": "11987654321",
-            "email": valid_emails[0]
-        }
-        customer = customer_service.create_customer(customer_data)
+        customer = customer_service.create_customer(sample_customer.__dict__)
         assert customer.id is not None
 
         start_date = datetime.now() + timedelta(days=1)
