@@ -134,22 +134,94 @@ Este relatório apresenta os resultados da execução de testes do sistema de al
 **Aprovados:** 29 (100%)
 **Reprovados:** 0
 
+#### Abordagem de Teste
+
+Os testes funcionais foram executados com **abordagem caixa-preta**, validando o comportamento da API através de suas interfaces públicas (endpoints HTTP) sem conhecimento da implementação interna. Cada teste verifica:
+
+- **Entrada:** Payload HTTP (JSON) com dados de requisição
+- **Processamento:** Chamada ao endpoint REST
+- **Saída:** Status code HTTP e resposta JSON
+- **Efeitos colaterais:** Verificação de mudanças de estado via consultas subsequentes
+
+#### Regras de Negócio Testadas
+
+**RN01 - Descontos Progressivos por Período:**
+- 1-7 dias: 0% de desconto
+- 8-14 dias: 10% de desconto
+- 15-30 dias: 15% de desconto
+- Acima de 30 dias: 20% de desconto
+
+**RN02 - Validação de Disponibilidade:**
+- Carro deve estar disponível para ser alugado
+- Carro em manutenção não pode ser alugado
+- Cliente com pagamento pendente não pode alugar
+
+**RN03 - Gestão de Estado de Aluguel:**
+- Apenas aluguéis "active" podem ser finalizados
+- Apenas aluguéis "active" podem ser cancelados
+- Finalização/cancelamento libera o carro
+
+**RN04 - Validação de Unicidade:**
+- CPF de cliente deve ser único no sistema
+- Placa de carro deve ser única no sistema
+
+**RN05 - Processamento de Pagamento:**
+- Pagamento deve estar vinculado a um aluguel válido
+- Processamento altera status para "completed"
+
+#### Cenários Testados (Abordagem Caixa-Preta)
+
+| # | Cenário | Entrada | Saída Esperada | Status |
+|---|---------|---------|----------------|--------|
+| 1 | Criar aluguel válido | Cliente válido + Carro disponível + Período 10 dias | Status 201, desconto 10%, carro indisponível | ✓ |
+| 2 | Rejeitar CPF duplicado | Cliente novo com CPF existente | Status 422, mensagem de erro | ✓ |
+| 3 | Processar pagamento | Pagamento com valor correto do aluguel | Status 200, status="completed" | ✓ |
+| 4 | Finalizar aluguel | Aluguel ativo + requisição de conclusão | Status 200, status="completed", carro disponível | ✓ |
+| 5 | Cancelar aluguel | Aluguel ativo + requisição de cancelamento | Status 200, status="cancelled", carro disponível | ✓ |
+| 6 | Buscar recurso inexistente | GET /cars/99999 | Status 404, mensagem de erro | ✓ |
+| 7 | Criar manutenção | Carro válido + dados de manutenção | Status 201, manutenção criada | ✓ |
+| 8 | Filtrar carros disponíveis | Filtros: marca="Toyota", preço_max=200 | Status 200, lista filtrada | ✓ |
+
 #### Endpoints Testados
 
 **Carros (7 testes):**
 - POST /cars - Criar carro
 - GET /cars/{id} - Buscar carro
 - GET /cars - Listar todos
-- GET /cars/search - Buscar com filtros
+- GET /cars/available/search - Buscar com filtros
 - PUT /cars/{id} - Atualizar carro
 - DELETE /cars/{id} - Deletar carro
 - GET /cars/{id}/not-found - Erro 404
 
-**Clientes (5 testes)**
-**Aluguéis (6 testes)**
-**Pagamentos (4 testes)**
-**Manutenções (5 testes)**
-**Testes Adicionais (2 testes)**
+**Clientes (5 testes):**
+- POST /customers - Criar cliente
+- POST /customers (CPF duplicado) - Validação de unicidade
+- GET /customers/{id} - Buscar cliente
+- GET /customers - Listar todos
+- PUT /customers/{id} - Atualizar cliente
+- DELETE /customers/{id} - Deletar cliente
+
+**Aluguéis (6 testes):**
+- POST /rentals - Criar aluguel com validações de negócio
+- GET /rentals/{id} - Buscar aluguel
+- GET /rentals - Listar todos
+- GET /rentals/search/filter - Filtrar por status
+- POST /rentals/{id}/complete - Finalizar aluguel
+- POST /rentals/{id}/cancel - Cancelar aluguel
+
+**Pagamentos (4 testes):**
+- POST /payments - Criar pagamento
+- GET /payments/{id} - Buscar pagamento
+- GET /payments - Listar todos
+- GET /payments/rental/{id} - Buscar por aluguel
+- POST /payments/{id}/process - Processar pagamento
+
+**Manutenções (5 testes):**
+- POST /maintenances - Criar manutenção
+- GET /maintenances/{id} - Buscar manutenção
+- GET /maintenances - Listar todas
+- GET /maintenances/car/{id} - Buscar por carro
+- POST /maintenances/{id}/complete - Finalizar manutenção
 
 ---
 
@@ -178,24 +250,25 @@ Este relatório apresenta os resultados da execução de testes do sistema de al
 ### 4.1 Cobertura Geral
 
 ```
-Total de Linhas: 1.477
-Linhas Cobertas: 1.203
-Cobertura: 81.45%
+Total de Statements: 1.477
+Statements Cobertos: 1.203
+Cobertura Geral: 81.45%
 Branches Totais: 279
-Branches Cobertas: 230
+Branches Cobertos: 230
 Cobertura de Branches: 78.62%
 ```
 
-### 4.2 Cobertura por Módulo
+### Cobertura por Módulo
 
-| Módulo | Statements | Miss | Cover |
-|--------|------------|------|-------|
-| **config/** | 64 | 4 | 93.75% |
-| **models/** | 124 | 5 | 95.97% |
-| **repositories/** | 316 | 64 | 79.75% |
-| **services/** | 365 | 76 | 79.18% |
-| **controllers/** | 443 | 130 | 70.65% |
-| **utils/** | 141 | 1 | 99.29% |
+| Módulo | Statements | Cobertos | Faltantes | Cobertura |
+|--------|------------|----------|-----------|-----------|
+| **utils/** | 141 | 140 | 1 | **99.29%** |
+| **models/** | 124 | 119 | 5 | **95.97%** |
+| **repositories/** | 316 | 252 | 64 | **79.75%** |
+| **services/** | 365 | 289 | 76 | **79.18%** |
+| **controllers/** | 443 | 313 | 130 | **70.65%** |
+
+**Relatório HTML Completo:** [htmlcov/index.html](../htmlcov/index.html)
 
 ---
 

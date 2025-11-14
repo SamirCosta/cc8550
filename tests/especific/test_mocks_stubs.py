@@ -135,6 +135,13 @@ class TestStubbing:
         """
         payment_service = PaymentService()
         mock_payment_repo = Mock()
+        mock_rental_repo = Mock()
+
+        # Stub de rental (necessário para PaymentService.create_payment)
+        rental_stub = Mock()
+        rental_stub.id = 1
+        rental_stub.customer_id = 1
+        mock_rental_repo.find_by_id.return_value = rental_stub
 
         # Stub de pagamento
         payment_stub = Mock()
@@ -147,6 +154,7 @@ class TestStubbing:
 
         mock_payment_repo.create.return_value = payment_stub
         payment_service.payment_repository = mock_payment_repo
+        payment_service.rental_repository = mock_rental_repo
 
         # Act
         payment_data = {

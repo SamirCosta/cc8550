@@ -59,7 +59,7 @@ class TestCustomerModel:
     def test_customer_creation(self, sample_customer):
         """Testa criação de um cliente."""
         assert sample_customer.name == "João Silva"
-        assert sample_customer.cpf == "12345678901"
+        assert sample_customer.cpf == "46627389894"
         assert sample_customer.phone == "11987654321"
         assert sample_customer.email == "joao@example.com"
         assert sample_customer.has_pending_payment is False
@@ -68,7 +68,7 @@ class TestCustomerModel:
         """Testa conversão de Customer para dicionário."""
         customer_dict = sample_customer.to_dict()
         assert customer_dict["name"] == "João Silva"
-        assert customer_dict["cpf"] == "12345678901"
+        assert customer_dict["cpf"] == "46627389894"
         assert customer_dict["email"] == "joao@example.com"
 
     def test_customer_from_dict(self):
