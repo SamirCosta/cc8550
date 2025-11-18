@@ -281,32 +281,4 @@ pytest --cov=src --cov-report=html
 
 # Apenas unitários
 pytest tests/unit/
-
-# Mutation testing
-mutmut run
 ```
-
----
-
-## 9. Documentação do Projeto
-
-### 9.1 Documentos Disponíveis
-
-| Documento | Descrição |
-|-----------|-----------|
-| **[README.md](../README.md)** | Visão geral e instruções básicas |
-| **[plano_testes.md](plano_testes.md)** | Plano mestre de testes |
-| **[relatorio_testes.md](relatorio_testes.md)** | Relatório de execução dos testes |
-| **[projeto.md](projeto.md)** | Este documento - visão completa do projeto |
-
----
-
-## 10. Resultados e Conclusões
-
-### 10.1 Objetivos Alcançados
-
-- Sistema funcional com todas as funcionalidades implementadas
-- 213 testes automatizados com 100% de aprovação
-- Cobertura de código acima das metas (81.45%)
-- Zero defeitos encontrados
-- Boa performance (<200ms)

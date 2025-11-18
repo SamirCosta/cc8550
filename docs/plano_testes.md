@@ -1,276 +1,335 @@
-# Plano de Teste
-## Sistema de Aluguel de Carros - API REST
+# Plano de Testes - Sistema de Aluguel de Carros
+
+## 1. Objetivo
+
+Este plano define a estratégia de testes para garantir a qualidade, confiabilidade e robustez do sistema de aluguel de carros, abrangendo diferentes níveis e técnicas de teste.
+
+## 2. Escopo dos Testes
+
+### 2.1 Módulos Testados
+- Modelos de dados (Car, Customer, Rental, Payment, Maintenance)
+- Repositórios (persistência e consultas)
+- Serviços (regras de negócio)
+- Controladores (API endpoints)
+- Validadores (CPF, email, telefone, placas, datas)
+- Utilitários (exportação de arquivos)
 
-## 1. Introdução
+## 3. Níveis de Teste
 
-### 1.1 Definição
+### 3.1 Testes Unitários
 
-Documento estratégico que define a abordagem geral de testes para a API REST de aluguel de carros. Este plano estabelece a visão macro do projeto de testes, diferenciando-se do Ciclo de Vida de Testes (STLC) por ser estático e estratégico, enquanto o STLC é dinâmico e executivo.
+#### 3.1.1 Modelos
+**Objetivo:** Validar a criação, serialização e deserialização de entidades.
+
+**Cobertura:**
+- Criação de objetos com diferentes combinações de atributos
+- Conversão para dicionário (to_dict)
+- Criação a partir de dicionário (from_dict)
+- Validação de atributos obrigatórios
 
----
+**Entidades testadas:** Car, Customer, Rental, Payment, Maintenance
 
-## 2. Escopo e Objetivos
+#### 3.1.2 Repositórios
+**Objetivo:** Garantir operações CRUD e consultas especializadas funcionam corretamente.
+
+**Cobertura:**
+- Operações CREATE (criação de registros)
+- Operações READ (busca por ID, listagem, filtros)
+- Operações UPDATE (atualização completa e parcial)
+- Operações DELETE (remoção de registros)
+- Consultas especializadas (busca por placa, CPF, email, status)
+- Tratamento de registros não encontrados
 
-### 2.1 Objetivo Principal
+**Repositórios testados:** CarRepository, CustomerRepository, RentalRepository, PaymentRepository, MaintenanceRepository
 
-Garantir que o sistema de aluguel de carros funcione corretamente, seja seguro, confiável e atenda aos requisitos de negócio antes da implantação em produção.
+#### 3.1.3 Serviços
+**Objetivo:** Validar regras de negócio e lógica de aplicação.
 
-### 2.2 Objetivos Específicos
+**Cobertura CarService:**
+- Criação de carros com validação de placa duplicada
+- Verificação de disponibilidade (status + manutenções ativas)
+- Atualização de disponibilidade
 
-#### Funcionalidade
-- 95% dos casos de teste funcionais aprovados
-- 100% das features principais testadas
-- Validação completa das regras de negócio
+**Cobertura CustomerService:**
+- Criação de clientes com validação de CPF e email únicos
+- Verificação de status de pagamento
+- Bloqueio de novos aluguéis para clientes inadimplentes
 
-#### Performance
-- Tempo de resposta < 200ms para 90% das requisições
-- Suporte a 100 requisições simultâneas
-- Taxa de sucesso > 99.5%
-
-#### Segurança
-- Zero vulnerabilidades críticas
-- Validação de entrada em todos os endpoints
-- Tratamento adequado de erros
-
-#### Cobertura
-- Cobertura de código ≥ 80%
-- Cobertura de branches ≥ 75%
-- Testes de mutação com score ≥ 70%
-
----
-
-## 3. Componentes do Plano
-
-### 3.1 Escopo e Objetivos
-
-**Funcionalidades:**
-- Gerenciamento de carros (CRUD)
-- Gerenciamento de clientes (CRUD)
-- Sistema de aluguéis com cálculo de descontos
-- Controle de pagamentos
-- Gestão de manutenções
-- Validação de regras de negócio
-- Tratamento de exceções
-
-**Tipos de Teste:**
-- Testes unitários
-- Testes de integração
-- Testes funcionais (API)
-- Testes de mutação
-- Testes de cobertura
-
-### 3.2 Estratégias de Teste
-
-#### Abordagem Geral
-
-Abordagem em pirâmide de testes:
-1. Base: Testes unitários
-2. Meio: Testes de integração
-3. Topo: Testes funcionais
-
-#### Testes Unitários
-- **Técnica:** Testes isolados de cada componente
-- **Cobertura:** Repositories, Services, Models
-- **Ferramenta:** Pytest
-
-#### Testes de Integração
-- **Técnica:** Testes de interação entre componentes
-- **Foco:** Repository + Service, Service + Controller
-- **Ferramenta:** Pytest com fixtures
-
-#### Testes Funcionais (API)
-- **Técnica:** Testes de endpoints completos
-- **Método:** HTTP requests via TestClient
-- **Ferramenta:** Pytest + FastAPI TestClient
-
-#### Testes de Mutação
-- **Técnica:** Mutação de código para validar qualidade dos testes
-- **Ferramenta:** mutmut
-- **Meta:** Score ≥ 70%
-
-### 3.3 Critérios de Entrada e Saída
-
-#### Critérios de Entrada
-
-Para iniciar uma fase de testes:
-- Código desenvolvido e revisado
-- Ambiente de testes configurado
-- Banco de dados de testes disponível
-- Dependências instaladas
-- Documentação técnica atualizada
-
-#### Critérios de Saída
-
-Para concluir uma fase de testes:
-- 100% dos testes executados
-- Taxa de aprovação ≥ 95%
-- Zero defeitos críticos
-- Zero defeitos de alta prioridade
-- Cobertura de código ≥ 80%
-- Documentação de testes completa
-
-### 3.5 Recursos
-
-#### Equipe
-
-| Função | Quantidade | Dedicação |
-|--------|------------|-----------|
-| Test Manager | 1 | 50% |
-| QA Analysts | 2 | 100% |
-| Developers (suporte) | 3 | 20% |
-
-#### Ferramentas
-
-| Categoria | Ferramenta | Custo |
-|-----------|------------|-------|
-| **Framework de Teste** | Pytest | Gratuito |
-| **Cobertura** | pytest-cov | Gratuito |
-| **Mutação** | mutmut | Gratuito |
-| **API Testing** | httpx | Gratuito |
-| **Mock** | pytest-mock | Gratuito |
-
-#### Infraestrutura
-
-| Recurso | Especificação |
-|---------|---------------|
-| **Ambiente de Testes** | Local + GitHub Actions |
-| **Banco de Dados** | SQLite em memória |
-| **Servidor** | Uvicorn (local) |
-
-### 3.6 Ambiente de Testes
-
-#### Configuração de Desenvolvimento
-
-```
-- Sistema Operacional: Windows/Linux/macOS
-- Python: 3.10+
-- Banco de Dados: SQLite (in-memory para testes)
-- Framework Web: FastAPI 0.121.1
-- Servidor: Uvicorn
-```
-
-#### Configuração de CI/CD
-
-```
-- Plataforma: GitHub Actions
-- Python: 3.10
-- Execução automática: A cada push
-- Relatórios: Coverage reports automáticos
-```
-
-### 3.7 Métricas de Qualidade
-
-#### Cobertura de Testes
-
-| Métrica | Meta |
-|---------|------|
-| **Cobertura de Linhas** | ≥ 80% |
-| **Cobertura de Branches** | ≥ 75% |
-| **Testes Unitários** | > 100 |
-| **Testes Integração** | > 30 |
-| **Testes Funcionais** | > 50 |
-
-#### Taxa de Mutação
-
-| Métrica | Meta |
-|---------|------|
-| **Mutation Score** | ≥ 70% |
-| **Mutantes Mortos** | ≥ 14 |
-| **Mutantes Sobreviventes** | < 30% |
-
----
-
-## 4. Estratégia de Teste por Componente
-
-### 4.1 Models
-
-**Objetivo:** Validar estrutura, validações e regras de negócio
-
-**Abordagem:**
-- Testes de validação de campos obrigatórios
-- Testes de validação de tipos
-- Testes de validação de formatos (email, telefone, CPF)
-- Testes de valores padrão
-
-**Prioridade:** Alta
-
-### 4.2 Repositories
-
-**Objetivo:** Validar operações CRUD e consultas ao banco
-
-**Abordagem:**
-- Testes de criação de registros
-- Testes de leitura (busca por ID, listagem, filtros)
-- Testes de atualização
-- Testes de exclusão
-- Testes de consultas complexas
-
-**Prioridade:** Alta
-
-### 4.3 Services
-
-**Objetivo:** Validar regras de negócio e processamento
-
-**Abordagem:**
-- Testes de cálculo de desconto (1-7, 8-14, 15-30, >30 dias)
-- Testes de validação de disponibilidade
-- Testes de validação de inadimplência
-- Testes de regras de manutenção
-- Testes de exceções de negócio
-
-**Prioridade:** Muito Alta
-
-### 4.4 Controllers
-
-**Objetivo:** Validar interface HTTP e integração completa
-
-**Abordagem:**
-- Testes de status HTTP corretos
-- Testes de payload de resposta
-- Testes de validação de entrada
-- Testes de tratamento de erros
-- Testes de autenticação (se aplicável)
-
-**Prioridade:** Alta
-
----
-
-## 5. Cenários de Teste Principais
-
-### 5.1 Fluxo de Aluguel Completo
-
-```
-1. Criar cliente
-2. Criar carro
-3. Verificar disponibilidade
-4. Criar aluguel
-5. Validar cálculo de valor
-6. Processar pagamento
-7. Finalizar aluguel
-```
-
-### 5.2 Validação de Regras de Desconto
-
-```
-Cenário 1: Aluguel de 5 dias → Sem desconto
-Cenário 2: Aluguel de 10 dias → 10% desconto
-Cenário 3: Aluguel de 20 dias → 15% desconto
-Cenário 4: Aluguel de 35 dias → 20% desconto
-```
-
-### 5.3 Validação de Disponibilidade
-
-```
-Cenário 1: Carro disponível → Aluguel permitido
-Cenário 2: Carro indisponível → Aluguel bloqueado
-Cenário 3: Carro em manutenção → Aluguel bloqueado
-Cenário 4: Carro com manutenção agendada → Aluguel bloqueado
-```
-
-### 5.4 Validação de Inadimplência
-
-```
-Cenário 1: Cliente sem pendências → Aluguel permitido
-Cenário 2: Cliente com pagamento pendente → Aluguel bloqueado
-Cenário 3: Cliente com pagamento processado → Aluguel permitido
+**Cobertura RentalService:**
+- Cálculo de valor com descontos progressivos:
+  - 7-14 dias: 10% desconto
+  - 15-30 dias: 15% desconto
+  - Mais de 30 dias: 20% desconto
+- Criação de aluguéis com validações completas
+- Finalização de aluguéis ativos
+- Cancelamento de aluguéis
+- Rejeição de operações em aluguéis finalizados
+
+**Cobertura PaymentService:**
+- Validação de métodos de pagamento (credit_card, debit_card, pix, cash)
+- Processamento de pagamentos pendentes
+- Atualização de status do cliente após pagamento
+
+**Cobertura MaintenanceService:**
+- Criação de manutenções com bloqueio de disponibilidade
+- Conclusão de manutenções com liberação do carro
+
+#### 3.1.4 Validadores
+**Objetivo:** Garantir validação rigorosa de dados de entrada.
+
+**Cobertura:**
+- Validação de CPF (formato e dígitos verificadores)
+- Validação de email (formato RFC-compliant)
+- Validação de telefone (formatos brasileiro)
+- Validação de placas (formato antigo e Mercosul)
+- Validação de intervalos de datas (início < fim, não no passado)
+- Validação de números positivos
+- Validação de ano (1900 a ano atual + 1)
+
+**Técnica:** Testes parametrizados com múltiplos casos válidos e inválidos
+
+#### 3.1.5 Controladores
+**Objetivo:** Validar mapeamento de requisições HTTP e tratamento de erros.
+
+**Cobertura:**
+- Conversão correta de dados de entrada
+- Tratamento de exceções (404, 422, 500)
+- Retorno de status HTTP apropriados
+- Serialização de respostas
+
+**Controladores testados:** CarController, CustomerController, RentalController, PaymentController, MaintenanceController
+
+#### 3.1.6 Utilitários
+**Objetivo:** Validar funcionalidades auxiliares.
+
+**Cobertura FileExporter:**
+- Exportação para JSON (incluindo caracteres especiais UTF-8)
+- Exportação para CSV (validação de campos e encoding)
+- Leitura de arquivos JSON e CSV
+- Criação automática de diretórios
+- Validação de dados vazios
+
+### 3.2 Testes de Integração
+
+**Objetivo:** Validar interação entre múltiplos componentes do sistema.
+
+**Cenários testados:**
+
+#### 3.2.1 Fluxo Completo de Aluguel
+1. Criação de carro e cliente
+2. Criação de aluguel (validações + cálculo de valor + bloqueio do carro)
+3. Criação de pagamento
+4. Processamento de pagamento
+5. Finalização de aluguel (liberação do carro)
+
+**Validações:** Status do carro alterado corretamente em cada etapa
+
+#### 3.2.2 Prevenção de Dupla Reserva
+- Tentativa de alugar carro já alugado deve falhar
+- Validação de disponibilidade em tempo real
+
+#### 3.2.3 Bloqueio por Inadimplência
+- Cliente com pagamento pendente não pode fazer novos aluguéis
+- Após pagamento, cliente é liberado
+
+#### 3.2.4 Integração com Manutenção
+- Carro com manutenção ativa não pode ser alugado
+- Conclusão de manutenção libera o carro para aluguel
+
+### 3.3 Testes Funcionais (Caixa-Preta)
+
+**Objetivo:** Validar endpoints da API via HTTP, sem conhecimento da implementação interna.
+
+**Cobertura por recurso:**
+
+#### 3.3.1 Carros (/cars)
+- POST: Criação com dados válidos e inválidos
+- GET: Busca por ID (existente e inexistente)
+- GET: Listagem completa
+- GET: Busca com filtros (marca, preço máximo)
+- PUT: Atualização de campos
+- DELETE: Remoção e verificação de exclusão
+
+#### 3.3.2 Clientes (/customers)
+- POST: Criação com validação de CPF duplicado
+- GET: Busca por ID
+- GET: Listagem completa
+- PUT: Atualização de dados
+- DELETE: Remoção de cliente
+
+#### 3.3.3 Aluguéis (/rentals)
+- POST: Criação de aluguel válido
+- GET: Busca por ID
+- GET: Listagem e filtros por status/cliente
+- POST: Finalização de aluguel (/complete)
+- POST: Cancelamento de aluguel (/cancel)
+
+#### 3.3.4 Pagamentos (/payments)
+- POST: Criação de pagamento
+- POST: Processamento de pagamento (/process)
+- GET: Busca por ID
+- GET: Listagem de pagamentos por aluguel
+
+#### 3.3.5 Manutenções (/maintenances)
+- POST: Criação de manutenção
+- POST: Conclusão de manutenção (/complete)
+- GET: Busca por ID
+- GET: Listagem por carro
+
+**Técnica:** TestClient do FastAPI com banco de dados isolado por teste
+
+### 3.4 Testes Específicos
+
+#### 3.4.1 Testes de Performance
+**Objetivo:** Garantir que operações críticas atendem requisitos de tempo.
+
+**Métricas monitoradas:**
+- Tempo de validação de CPF (< 1ms por operação)
+- Tempo de cálculo de valor de aluguel
+- Throughput de validações em lote (100, 1000 operações)
+- Performance de serialização de modelos (500 objetos)
+- Escalabilidade com carga crescente
+
+**Ferramenta:** pytest-benchmark
+
+#### 3.4.2 Testes de Orientação a Objetos
+**Objetivo:** Validar princípios de OOP e design patterns.
+
+**Cobertura:**
+- Herança (hierarquia Vehicle -> RentalCar -> PremiumCar)
+- Polimorfismo (Strategy Pattern para cálculo de descontos)
+- Encapsulamento (properties, atributos privados)
+- Classes abstratas (BaseModel, DiscountStrategy)
+- Composição (Rental referencia Car e Customer)
+- Sobrescrita de métodos (to_dict, validate)
+
+#### 3.4.3 Testes com Mocks e Stubs
+**Objetivo:** Isolar componentes para testes focados.
+
+**Técnicas aplicadas:**
+- Mock de repositórios para testar serviços isoladamente
+- Coordenação de múltiplos mocks (car_service + customer_service + repositories)
+- Stubs parametrizados (diferentes métodos de pagamento)
+- Patch de dependências externas (banco de dados)
+- Simulação de erros (conexão BD, timeouts)
+- Side effects para múltiplos comportamentos
+- Verificação de chamadas e argumentos
+
+**Ferramentas:** unittest.mock (Mock, patch, MagicMock)
+
+#### 3.4.4 Testes de Mutação
+**Objetivo:** Detectar mutações no código que não são detectadas pelos testes convencionais.
+
+**Mutações testadas:**
+- Operadores aritméticos (multiplicação -> adição)
+- Operadores relacionais (> -> >=, != -> ==)
+- Constantes numéricas (valores de desconto: 0.20 -> 0.19)
+- Valores booleanos (True -> False em availability)
+- Lógica de status (active -> completed)
+
+**Componentes cobertos:** RentalService, RentalController, RentalRepository
+
+**Ferramenta:** mutmut
+
+## 4. Estratégia de Testes
+
+### 4.1 Testes Parametrizados
+Utilização de @pytest.mark.parametrize para:
+- Testar múltiplos CPFs, emails, telefones, placas válidos e inválidos
+- Validar diferentes períodos de aluguel e descontos
+- Testar métodos de pagamento variados
+- Verificar escalabilidade com diferentes cargas
+
+### 4.2 Fixtures
+Fixtures reutilizáveis para:
+- Dados de teste (valid_cpfs, valid_emails, valid_phones, valid_license_plates)
+- Instâncias de modelos (sample_car, sample_customer, sample_rental)
+- Repositórios com banco de dados de teste
+- Cliente de teste da API (TestClient)
+
+### 4.3 Isolamento de Testes
+- Banco de dados único por teste (UUID no nome do arquivo)
+- Limpeza automática após cada teste (teardown)
+- Mocks para evitar dependências externas
+- Sem compartilhamento de estado entre testes
+
+### 4.4 Cobertura de Código
+**Meta:** Mínimo 90% de cobertura de linhas
+
+**Áreas críticas com 100% de cobertura:**
+- Validadores (segurança de dados)
+- Cálculo de valores (precisão financeira)
+- Regras de negócio (consistência do sistema)
+
+## 5. Critérios de Aceitação
+
+### 5.1 Testes Unitários
+- Todos os testes devem passar
+- Cobertura mínima de 80%
+- Tempo de execução < 30 segundos
+
+### 5.2 Testes de Integração
+- Fluxos completos executam sem erros
+- Validações de regras de negócio são respeitadas
+- Transações mantêm consistência do banco
+
+### 5.3 Testes Funcionais
+- Todos os endpoints retornam códigos HTTP corretos
+- Respostas JSON estão bem formatadas
+- Validações de entrada funcionam adequadamente
+
+### 5.4 Testes de Performance
+- Operações críticas atendem SLAs definidos
+- Escalabilidade linear comprovada
+- Sem degradação com carga crescente
+
+### 5.5 Testes de Mutação
+- Score de mutação > 80%
+- Mutações críticas são detectadas
+- Cobertura de operadores e constantes
+
+## 6. Ambiente de Testes
+
+### 6.1 Ferramentas
+- **Framework:** pytest
+- **Cobertura:** pytest-cov
+- **Performance:** pytest-benchmark
+- **Mutação:** mutmut
+- **Mocks:** unittest.mock
+- **HTTP Client:** FastAPI TestClient
+
+### 6.2 Banco de Dados
+- SQLite em memória para testes unitários
+- Arquivos temporários únicos para testes de integração/funcionais
+- Limpeza automática após execução
+
+### 6.3 Fixtures Globais
+- Dados válidos pré-definidos (CPFs, emails, placas)
+- Modelos de exemplo reutilizáveis
+- Configuração de repositórios com banco de teste
+
+## 7. Execução dos Testes
+
+### 7.1 Comandos
+```bash
+# Todos os testes
+pytest
+
+# Com cobertura
+pytest --cov=src --cov-report=html
+
+# Apenas unitários
+pytest tests/unit/
+
+# Apenas integração
+pytest tests/integration/
+
+# Apenas funcionais
+pytest tests/functional/
+
+# Performance com benchmark
+pytest tests/especific/test_performance.py --benchmark-only
+
+# Testes de mutação
+mutmut run
 ```

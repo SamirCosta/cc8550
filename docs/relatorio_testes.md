@@ -1,7 +1,6 @@
-# Relatório de Testes
-## Sistema de Aluguel de Carros - API REST
+# Relatório de Testes - Sistema de Aluguel de Carros
 
-## 1. Sumário Executivo
+## 1. Sumário
 
 ### 1.1 Visão Geral
 
@@ -11,13 +10,12 @@ Este relatório apresenta os resultados da execução de testes do sistema de al
 
 | Métrica | Meta | Resultado |
 |---------|------|-----------|
-| **Testes Executados** | 210 | 213 |
-| **Taxa de Aprovação** | 95% | 100% |
-| **Cobertura de Linhas** | 80% | 81.45% |
-| **Cobertura de Branches** | 75% | 78.62% |
-| **Mutation Score** | 70% | 100% |
-| **Defeitos Críticos** | 0 | 0 |
-| **Tempo de Execução** | < 10min | 6.04s |
+| Testes Executados | 210 | 204 |
+| Taxa de Aprovação | 95% | 100% |
+| Cobertura de Linhas | 80% | 82.19% |
+| Mutation Score | 70% | **N/A - Dado não disponível** |
+| Defeitos Críticos | 0 | 0 |
+| Tempo de Execução | < 10min | 15.02s |
 
 ---
 
@@ -64,279 +62,145 @@ Este relatório apresenta os resultados da execução de testes do sistema de al
 
 | Tipo | Quantidade | Objetivo |
 |------|------------|----------|
-| **Unitários** | 154 | Validar componentes isolados |
-| **Integração** | 9 | Validar interação entre componentes |
-| **Funcionais (API)** | 29 | Validar endpoints completos |
-| **Mutação** | 21 | Validar qualidade dos testes |
-| **TOTAL** | **213** | - |
+| Unitários | 119 | Validar componentes isolados |
+| Integração | 5 | Validar interação entre componentes |
+| Funcionais (API) | 29 | Validar endpoints completos |
+| Mutação | 20 | Validar qualidade dos testes |
+| Específicos | 31 | Validar performance em operações críticas |
+| **TOTAL** | **204** | **-** |
 
 ---
 
 ## 3. Resultados Detalhados
 
-### 3.1 Testes Unitários
+### 3.1 Cobertura de Código
 
-**Total:** 154 testes
-**Aprovados:** 154 (100%)
-**Reprovados:** 0
+- **Total de Testes Aprovados:** 204 (100%)
+- **Total de Warnings:** 55
+- **Tempo de Execução:** 15.02 segundos
+- **Cobertura Geral:** 82.19%
+- **Total de Statements:** 1.477
+- **Statements não cobertos:** 263
 
-#### Cobertura por Componente
+#### Cobertura por Componente (Dados Reais)
 
-| Componente | Linhas | Cobertura | Status |
-|------------|--------|-----------|--------|
-| **Models** | 124 | 95.97% | Excelente |
-| **Repositories** | 316 | 79.75% | Bom |
-| **Services** | 365 | 79.73% | Bom |
-| **Controllers** | 443 | 71.11% | Adequado |
-| **Utils** | 141 | 97.87% | Excelente |
-| **Config** | 64 | 93.75% | Excelente |
+| Componente | Statements | Miss | Cobertura |
+|------------|------------|------|-----------|
+| config/ | 64 | 4 | 93.75% |
+| models/ | 124 | 5 | 95.97% |
+| repositories/ | 316 | 64 | 79.75% |
+| services/ | 365 | 76 | 79.18% |
+| controllers/ | 443 | 130 | 70.65% |
+| utils/ | 141 | 1 | 99.29% |
+| **TOTAL** | **1.477** | **263** | **82.19%** |
 
-**Análise:**
-- Modelos e utilitários têm excelente cobertura devido à simplicidade
-- Serviços e repositórios atingiram meta (>75%)
-- Controllers têm cobertura menor devido a tratamento de exceções HTTP
-
----
-
-### 3.2 Testes de Integração
-
-**Total:** 9 testes
-**Aprovados:** 9 (100%)
-**Reprovados:** 0
-
-#### Cenários Testados
-
-**Fluxo Completo de Aluguel (1 teste):**
-1. Criação de cliente
-2. Criação de carro
-3. Criação de aluguel
-4. Criação de pagamento
-5. Processamento de pagamento
-6. Finalização de aluguel
-
-**Validação de Regras de Negócio (4 testes):**
-- Cliente com pagamento pendente não pode alugar
-- Carro com manutenção ativa não pode ser alugado
-- Carro liberado após conclusão de manutenção
-- Não permitir aluguel duplicado do mesmo carro
-
-**Cálculo de Descontos (4 testes):**
-- 1-7 dias: 0% desconto
-- 8-14 dias: 10% desconto
-- 15-30 dias: 15% desconto
-- >30 dias: 20% desconto
+#### Análise:
+- Modelos e utilitários têm excelente cobertura (>95%)
+- Repositórios e serviços atingiram cobertura adequada (~79%)
+- Controllers têm cobertura de 70.65%, abaixo da meta de 80%
+- Cobertura geral de 82.19% está acima da meta de 80%
 
 ---
 
-### 3.3 Testes Funcionais (API)
+## 4. Análise Detalhada por Módulo
 
-**Total:** 29 testes
-**Aprovados:** 29 (100%)
-**Reprovados:** 0
+### 4.1 Módulos com Melhor Cobertura (≥95%)
 
-#### Abordagem de Teste
+| Módulo | Cobertura | Status |
+|--------|-----------|--------|
+| src/__init__.py | 100.00% | Excelente |
+| src/config/__init__.py | 100.00% | Excelente |
+| src/controllers/__init__.py | 100.00% | Excelente |
+| src/models/__init__.py | 100.00% | Excelente |
+| src/repositories/__init__.py | 100.00% | Excelente |
+| src/services/__init__.py | 100.00% | Excelente |
+| src/utils/__init__.py | 100.00% | Excelente |
+| src/utils/exceptions.py | 100.00% | Excelente |
+| src/utils/file_export.py | 100.00% | Excelente |
+| src/utils/logger.py | 100.00% | Excelente |
+| src/utils/validators.py | 98.25% | Excelente |
+| src/models/rental.py | 96.55% | Excelente |
+| src/models/maintenance.py | 96.00% | Excelente |
+| src/models/payment.py | 96.00% | Excelente |
+| src/models/car.py | 95.65% | Excelente |
+| src/models/customer.py | 95.45% | Excelente |
 
-Os testes funcionais foram executados com **abordagem caixa-preta**, validando o comportamento da API através de suas interfaces públicas (endpoints HTTP) sem conhecimento da implementação interna. Cada teste verifica:
+### 4.2 Módulos que Requerem Atenção (<80%)
 
-- **Entrada:** Payload HTTP (JSON) com dados de requisição
-- **Processamento:** Chamada ao endpoint REST
-- **Saída:** Status code HTTP e resposta JSON
-- **Efeitos colaterais:** Verificação de mudanças de estado via consultas subsequentes
-
-#### Regras de Negócio Testadas
-
-**RN01 - Descontos Progressivos por Período:**
-- 1-7 dias: 0% de desconto
-- 8-14 dias: 10% de desconto
-- 15-30 dias: 15% de desconto
-- Acima de 30 dias: 20% de desconto
-
-**RN02 - Validação de Disponibilidade:**
-- Carro deve estar disponível para ser alugado
-- Carro em manutenção não pode ser alugado
-- Cliente com pagamento pendente não pode alugar
-
-**RN03 - Gestão de Estado de Aluguel:**
-- Apenas aluguéis "active" podem ser finalizados
-- Apenas aluguéis "active" podem ser cancelados
-- Finalização/cancelamento libera o carro
-
-**RN04 - Validação de Unicidade:**
-- CPF de cliente deve ser único no sistema
-- Placa de carro deve ser única no sistema
-
-**RN05 - Processamento de Pagamento:**
-- Pagamento deve estar vinculado a um aluguel válido
-- Processamento altera status para "completed"
-
-#### Cenários Testados (Abordagem Caixa-Preta)
-
-| # | Cenário | Entrada | Saída Esperada | Status |
-|---|---------|---------|----------------|--------|
-| 1 | Criar aluguel válido | Cliente válido + Carro disponível + Período 10 dias | Status 201, desconto 10%, carro indisponível | ✓ |
-| 2 | Rejeitar CPF duplicado | Cliente novo com CPF existente | Status 422, mensagem de erro | ✓ |
-| 3 | Processar pagamento | Pagamento com valor correto do aluguel | Status 200, status="completed" | ✓ |
-| 4 | Finalizar aluguel | Aluguel ativo + requisição de conclusão | Status 200, status="completed", carro disponível | ✓ |
-| 5 | Cancelar aluguel | Aluguel ativo + requisição de cancelamento | Status 200, status="cancelled", carro disponível | ✓ |
-| 6 | Buscar recurso inexistente | GET /cars/99999 | Status 404, mensagem de erro | ✓ |
-| 7 | Criar manutenção | Carro válido + dados de manutenção | Status 201, manutenção criada | ✓ |
-| 8 | Filtrar carros disponíveis | Filtros: marca="Toyota", preço_max=200 | Status 200, lista filtrada | ✓ |
-
-#### Endpoints Testados
-
-**Carros (7 testes):**
-- POST /cars - Criar carro
-- GET /cars/{id} - Buscar carro
-- GET /cars - Listar todos
-- GET /cars/available/search - Buscar com filtros
-- PUT /cars/{id} - Atualizar carro
-- DELETE /cars/{id} - Deletar carro
-- GET /cars/{id}/not-found - Erro 404
-
-**Clientes (5 testes):**
-- POST /customers - Criar cliente
-- POST /customers (CPF duplicado) - Validação de unicidade
-- GET /customers/{id} - Buscar cliente
-- GET /customers - Listar todos
-- PUT /customers/{id} - Atualizar cliente
-- DELETE /customers/{id} - Deletar cliente
-
-**Aluguéis (6 testes):**
-- POST /rentals - Criar aluguel com validações de negócio
-- GET /rentals/{id} - Buscar aluguel
-- GET /rentals - Listar todos
-- GET /rentals/search/filter - Filtrar por status
-- POST /rentals/{id}/complete - Finalizar aluguel
-- POST /rentals/{id}/cancel - Cancelar aluguel
-
-**Pagamentos (4 testes):**
-- POST /payments - Criar pagamento
-- GET /payments/{id} - Buscar pagamento
-- GET /payments - Listar todos
-- GET /payments/rental/{id} - Buscar por aluguel
-- POST /payments/{id}/process - Processar pagamento
-
-**Manutenções (5 testes):**
-- POST /maintenances - Criar manutenção
-- GET /maintenances/{id} - Buscar manutenção
-- GET /maintenances - Listar todas
-- GET /maintenances/car/{id} - Buscar por carro
-- POST /maintenances/{id}/complete - Finalizar manutenção
+| Módulo | Cobertura | Linhas Faltantes | Status |
+|--------|-----------|------------------|--------|
+| src/controllers/maintenance_controller.py | 65.52% | 30 statements | Atenção |
+| src/controllers/payment_controller.py | 65.52% | 30 statements | Atenção |
+| src/services/payment_service.py | 68.83% | 24 statements | Atenção |
+| src/controllers/rental_controller.py | 71.70% | 30 statements | Atenção |
+| src/repositories/payment_repository.py | 72.55% | 14 statements | Atenção |
+| src/services/maintenance_service.py | 74.58% | 15 statements | Atenção |
+| src/services/rental_service.py | 77.00% | 23 statements | Atenção |
+| src/controllers/customer_controller.py | 77.46% | 16 statements | Atenção |
+| src/controllers/car_controller.py | 78.26% | 20 statements | Atenção |
+| src/repositories/rental_repository.py | 79.55% | 18 statements | Atenção |
 
 ---
 
-### 3.4 Testes de Mutação
+## 5. Análise de Performance (Benchmarks)
 
-**Total:** 21 mutation killers implementados
-**Aprovados:** 21 (100%)
-**Reprovados:** 0
-**Mutation Score:** 100% (21/21 mutantes mortos)
+Os testes de performance foram executados para avaliar a eficiência de operações críticas do sistema. Os valores abaixo representam tempos em microssegundos (μs).
 
-#### Categorias de Mutação Testadas
+| Teste | Min (μs) | Max (μs) | Média (μs) | Operações/s |
+|-------|----------|----------|------------|-------------|
+| CPF Validation | 4.40 | 39.60 | 4.75 | 210,465 |
+| Model Creation | 116.70 | 2,399.00 | 124.02 | 8,063 |
+| Rental Calculation | 119.10 | 2,463.60 | 143.85 | 6,951 |
+| Model Serialization | 152.30 | 1,078.30 | 169.36 | 5,904 |
+| Bulk CPF Validation | 432.80 | 2,204.10 | 458.21 | 2,182 |
+| Large Dataset Validation | 4,404.50 | 6,111.00 | 4,652.99 | 214 |
 
-- **Boundary Mutations (7 testes)** - 100% mutantes mortos
-- **Arithmetic Mutations (1 teste)** - 100% mutantes mortos
-- **Logical Mutations (3 testes)** - 100% mutantes mortos
-- **Constant Mutations (3 testes)** - 100% mutantes mortos
-- **Return Value Mutations (1 teste)** - 100% mutantes mortos
-- **String Constant Mutations (1 teste)** - 100% mutantes mortos
-- **Edge Cases (3 testes)** - 100% mutantes mortos
-- **Coverage Gap Killers (2 testes)** - 100% mutantes mortos
+### 5.1 Interpretação dos Resultados
 
----
+**Validação de CPF:** Excelente performance com ~210 mil operações por segundo, ideal para validações em tempo real.
 
-## 4. Cobertura de Código
+**Criação de Modelos:** Performance adequada para operações CRUD, com média de ~8 mil operações por segundo.
 
-### 4.1 Cobertura Geral
+**Cálculo de Aluguel:** Boa performance para cálculos de negócio, mantendo ~7 mil operações por segundo.
 
-```
-Total de Statements: 1.477
-Statements Cobertos: 1.203
-Cobertura Geral: 81.45%
-Branches Totais: 279
-Branches Cobertos: 230
-Cobertura de Branches: 78.62%
-```
+**Serialização:** Performance satisfatória para conversão de objetos, adequada para APIs REST.
 
-### Cobertura por Módulo
+**Validação em Lote:** Redução esperada na performance ao processar múltiplos CPFs simultaneamente (~2 mil ops/s).
 
-| Módulo | Statements | Cobertos | Faltantes | Cobertura |
-|--------|------------|----------|-----------|-----------|
-| **utils/** | 141 | 140 | 1 | **99.29%** |
-| **models/** | 124 | 119 | 5 | **95.97%** |
-| **repositories/** | 316 | 252 | 64 | **79.75%** |
-| **services/** | 365 | 289 | 76 | **79.18%** |
-| **controllers/** | 443 | 313 | 130 | **70.65%** |
-
-**Relatório HTML Completo:** [htmlcov/index.html](../htmlcov/index.html)
-
----
-
-## 5. Performance dos Testes
-
-### 5.1 Tempo de Execução
-
-```
-Execução Total: 6.04 segundos
-Testes Executados: 213
-Média por Teste: 0.028 segundos
-Taxa de Execução: 35 testes/segundo
-```
-
-### 5.2 Performance da Aplicação
-
-Durante os testes funcionais (API):
-
-**Tempo de Resposta:**
-- GET requests: < 50ms (média)
-- POST requests: < 100ms (média)
-- PUT requests: < 80ms (média)
-- DELETE requests: < 60ms (média)
+**Dataset Grande:** Como esperado, operações com grandes volumes de dados apresentam menor throughput (~214 ops/s).
 
 ---
 
 ## 6. Ambiente de Testes
 
-**Python:** 3.13.3
-**Banco de Dados:** SQLite (in-memory)
-**Framework Web:** FastAPI 0.121.1
+- **Python:** 3.13.3 final-0
+- **Plataforma:** Windows 32-bit
+- **Banco de Dados:** SQLite (in-memory)
+- **Framework Web:** FastAPI
 
 ### 6.1 Ferramentas Utilizadas
 
-| Ferramenta | Versão | Finalidade |
-|------------|--------|------------|
-| pytest | 9.0.0 | Framework de testes |
-| pytest-cov | 7.0.0 | Cobertura de código |
-| pytest-mock | 3.15.1 | Mocking |
-| httpx | 0.28.1 | Cliente HTTP para testes |
-| mutmut | 3.3.1 | Testes de mutação |
-
----
-
-## 7. Critérios de Aceitação
-
-### 7.1 Critérios de Saída
-
-| Critério | Meta | Real | Status |
-|----------|------|------|--------|
-| **Testes Executados** | 100% | 100% | ✓ |
-| **Taxa de Aprovação** | ≥ 95% | 100% | ✓ |
-| **Defeitos Críticos** | 0 | 0 | ✓ |
-| **Defeitos Alta Prioridade** | 0 | 0 | ✓ |
-| **Cobertura de Código** | ≥ 80% | 81.45% | ✓ |
-| **Cobertura de Branches** | ≥ 75% | 78.62% | ✓ |
-| **Mutation Score** | ≥ 70% | 100% | ✓ |
+| Ferramenta | Finalidade |
+|------------|------------|
+| pytest | Framework de testes |
+| pytest-cov | Cobertura de código |
+| pytest-benchmark | Testes de performance |
+| pytest-mock | Mocking |
 
 ---
 
 ## 8. Conclusão
 
-O sistema de aluguel de carros foi testado de forma abrangente e demonstrou excelente qualidade:
+O projeto apresenta uma base sólida de testes com 82.19% de cobertura e 204 testes aprovados. Os módulos utilitários e de modelos demonstram excelente cobertura (>95%), enquanto alguns controllers e services requerem atenção adicional.
 
-**Destaques:**
-- 213 testes executados com 100% de aprovação
-- Cobertura de código acima das metas (81.45% linhas, 78.62% branches)
-- Mutation score de 100% (21/21 mutantes mortos)
-- Zero defeitos encontrados
-- Performance excelente (< 200ms)
-- Tempo de execução rápido (6 segundos)
+A performance do sistema está adequada para os casos de uso atuais, com operações críticas como validação de CPF apresentando excelente throughput (~210 mil operações por segundo). O tempo total de execução dos testes (15.02 segundos) é satisfatório e permite execução rápida no ciclo de desenvolvimento.
+
+Os próximos passos devem focar em aumentar a cobertura dos módulos identificados (especialmente controllers de maintenance e payment) e resolver os 55 warnings pendentes, visando atingir uma cobertura mínima de 80% em todos os módulos individuais.
+
+### Destaques:
+- 204 testes executados com 100% de aprovação
+- Cobertura de código acima das metas (82.19%)
+- Performance excelente em validações críticas (210k ops/s)
+- Zero defeitos críticos encontrados
+- Tempo de execução rápido (15 segundos)
+- 10 módulos com cobertura de 100%
