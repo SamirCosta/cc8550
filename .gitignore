@@ -25,6 +25,7 @@ env/
 
 .pytest_cache/
 .coverage
+htmlcov/
 .mutmut-cache
 
 *.db
